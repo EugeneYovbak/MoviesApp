@@ -20,11 +20,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class HomeActivity extends Activity implements HomeView {
+public class HomeActivity extends Activity implements HomeView, SwipeRefreshLayout.OnRefreshListener {
 
+    @BindView(R.id.refreshLayout)
+    SwipeRefreshLayout mRefreshLayout;
     @BindView(R.id.rv_movies)
     RecyclerView mMoviesRecyclerView;
     @BindView(R.id.progressBar)
@@ -59,7 +62,6 @@ public class HomeActivity extends Activity implements HomeView {
         }
     };
 
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,6 +71,7 @@ public class HomeActivity extends Activity implements HomeView {
         mPresenter.onAttach(this);
 
         initMovieList();
+        mRefreshLayout.setOnRefreshListener(this);
         mPresenter.getMovies();
     }
 
@@ -83,6 +86,12 @@ public class HomeActivity extends Activity implements HomeView {
     }
 
     @Override
+    public void onRefresh() {
+        mRefreshLayout.setRefreshing(true);
+        mPresenter.refreshMovieList();
+    }
+
+    @Override
     public void showLoadingIndicator() {
         mProgressBar.setVisibility(View.VISIBLE);
     }
@@ -90,10 +99,16 @@ public class HomeActivity extends Activity implements HomeView {
     @Override
     public void hideLoadingIndicator() {
         mProgressBar.setVisibility(View.GONE);
+        mRefreshLayout.setRefreshing(false);
     }
 
     @Override
-    public void moviesLoadSuccess(List<Movie> movies) {
+    public void showMovies(List<Movie> movies) {
+        mMovieAdapter.setMovieList(movies);
+    }
+
+    @Override
+    public void showMoreMovies(List<Movie> movies) {
         mMovieAdapter.addMovieList(movies);
     }
 

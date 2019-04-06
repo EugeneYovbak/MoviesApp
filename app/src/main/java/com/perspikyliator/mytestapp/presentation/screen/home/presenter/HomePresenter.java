@@ -1,6 +1,7 @@
 package com.perspikyliator.mytestapp.presentation.screen.home.presenter;
 
 import com.perspikyliator.mytestapp.domain.MovieRepository;
+import com.perspikyliator.mytestapp.domain.model.MovieMeta;
 import com.perspikyliator.mytestapp.presentation.base.BasePresenter;
 import com.perspikyliator.mytestapp.presentation.screen.home.view.HomeView;
 
@@ -21,6 +22,11 @@ public class HomePresenter extends BasePresenter<HomeView> {
         mMovieRepository = movieRepository;
     }
 
+    public void refreshMovieList() {
+        mCurrentPage = 0;
+        getMovies();
+    }
+
     public void getMovies() {
         if (mCurrentPage < mTotalPages) {
             mView.showLoadingIndicator();
@@ -29,14 +35,24 @@ public class HomePresenter extends BasePresenter<HomeView> {
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .doAfterTerminate(mView::hideLoadingIndicator)
-                            .subscribe(movieMeta -> {
-                                        mCurrentPage = movieMeta.getPage();
-                                        mTotalPages = movieMeta.getPages();
-                                        mView.moviesLoadSuccess(movieMeta.getMovies());
-                                    },
-                                    throwable -> mView.moviesLoadError(throwable.getMessage())
+                            .subscribe(
+                                    this::handleMovieListLoadSuccess,
+                                    this::handleMovieListLoadError
                             )
             );
         }
+    }
+
+    private void handleMovieListLoadSuccess(MovieMeta movieMeta) {
+        mCurrentPage = movieMeta.getPage();
+        mTotalPages = movieMeta.getPages();
+        if (mCurrentPage == 1)
+            mView.showMovies(movieMeta.getMovies());
+        else
+            mView.showMoreMovies(movieMeta.getMovies());
+    }
+
+    private void handleMovieListLoadError(Throwable throwable) {
+        mView.moviesLoadError(throwable.getMessage());
     }
 }

@@ -6,7 +6,9 @@ import com.perspikyliator.mytestapp.presentation.base.BaseView;
 import java.util.List;
 
 public interface HomeView extends BaseView {
-    void moviesLoadSuccess(List<Movie> movies);
+    void showMovies(List<Movie> movies);
+
+    void showMoreMovies(List<Movie> movies);
 
     void moviesLoadError(String message);
 }
