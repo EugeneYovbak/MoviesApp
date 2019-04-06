@@ -15,13 +15,21 @@
         android:id="@+id/iv_movie"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:foreground="@drawable/background_movie_details"
-        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+    <View
+        android:id="@+id/coverView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_movie_details"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@+id/iv_movie"
+        app:layout_constraintStart_toStartOf="@+id/iv_movie"
+        app:layout_constraintTop_toTopOf="@+id/iv_movie" />
 
     <TextView
         android:id="@+id/tv_movie_title"

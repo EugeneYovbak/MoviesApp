@@ -29,6 +29,8 @@ public class MovieActivity extends Activity implements MovieView {
 
     @BindView(R.id.iv_movie)
     ImageView mMovieImageView;
+    @BindView(R.id.coverView)
+    View mCoverView;
     @BindView(R.id.tv_movie_title)
     TextView mMovieTitleTextView;
     @BindView(R.id.tv_movie_rate)
@@ -78,7 +80,7 @@ public class MovieActivity extends Activity implements MovieView {
 
     @Override
     public void showMovie(Movie movie) {
-        mMovieImageView.setVisibility(View.VISIBLE);
+        mCoverView.setVisibility(View.VISIBLE);
         Glide.with(this)
                 .load(BuildConfig.IMAGE_URL + movie.getImage())
                 .apply(new RequestOptions().centerCrop())
