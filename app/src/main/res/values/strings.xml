@@ -4,9 +4,6 @@
     <!--Home-->
     <string name="home_title">Popular Movies</string>
 
-    <!--Movie-->
-    <string name="movie_rate">Rate %1$s</string>
-
     <!--Errors-->
     <string name="error_connection_message">The Internet connection appears to be offline</string>
 </resources>

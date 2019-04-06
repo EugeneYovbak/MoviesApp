@@ -79,7 +79,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
                     .apply(new RequestOptions().centerCrop())
                     .into(mMovieImageView);
             mMovieTitleTextView.setText(movie.getTitle());
-            mMovieRateTextView.setText(itemView.getContext().getString(R.string.movie_rate, movie.getRate()));
+            mMovieRateTextView.setText(movie.getRate());
             mMovieOverviewTextView.setText(movie.getOverview());
             itemView.setOnClickListener(view -> mItemInteractionListener.onMovieClick(movie));
         }
