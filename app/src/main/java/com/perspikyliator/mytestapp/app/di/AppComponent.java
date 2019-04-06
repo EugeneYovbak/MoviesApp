@@ -4,6 +4,7 @@ import com.perspikyliator.mytestapp.data.di.ApiModule;
 import com.perspikyliator.mytestapp.data.di.DataModule;
 import com.perspikyliator.mytestapp.data.di.StorageModule;
 import com.perspikyliator.mytestapp.presentation.screen.home.di.HomeComponent;
+import com.perspikyliator.mytestapp.presentation.screen.movie.di.MovieComponent;
 
 import javax.inject.Singleton;
 
@@ -13,4 +14,6 @@ import dagger.Component;
 @Singleton
 public interface AppComponent {
     HomeComponent plusHomeComponent();
+
+    MovieComponent plusMovieComponent();
 }

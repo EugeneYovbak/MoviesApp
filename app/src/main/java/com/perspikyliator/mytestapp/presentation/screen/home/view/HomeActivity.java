@@ -1,6 +1,7 @@
 package com.perspikyliator.mytestapp.presentation.screen.home.view;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -11,6 +12,7 @@ import com.perspikyliator.mytestapp.app.TestApp;
 import com.perspikyliator.mytestapp.domain.model.Movie;
 import com.perspikyliator.mytestapp.presentation.screen.home.presenter.HomePresenter;
 import com.perspikyliator.mytestapp.presentation.screen.home.view.adapter.MovieAdapter;
+import com.perspikyliator.mytestapp.presentation.screen.movie.view.MovieActivity;
 
 import java.util.List;
 
@@ -76,13 +78,17 @@ public class HomeActivity extends Activity implements HomeView, SwipeRefreshLayo
     }
 
     private void initMovieList() {
-        mMovieAdapter = new MovieAdapter(movie -> {
-
-        });
+        mMovieAdapter = new MovieAdapter(this::openMovieDetailScreen);
         mLinearLayoutManager = new LinearLayoutManager(this);
         mMoviesRecyclerView.setLayoutManager(mLinearLayoutManager);
         mMoviesRecyclerView.addOnScrollListener(mOnScrollListener);
         mMoviesRecyclerView.setAdapter(mMovieAdapter);
+    }
+
+    private void openMovieDetailScreen(Movie movie) {
+        Intent intent = new Intent(this, MovieActivity.class);
+        intent.putExtra(MovieActivity.EXTRA_MOVIE_ID, movie.getId());
+        startActivity(intent);
     }
 
     @Override
