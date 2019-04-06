@@ -93,7 +93,7 @@ public class HomeActivity extends Activity implements HomeView, SwipeRefreshLayo
 
     @Override
     public void onRefresh() {
-        mRefreshLayout.setRefreshing(true);
+        mRefreshLayout.setRefreshing(false);
         mPresenter.refreshMovieList();
     }
 
@@ -105,7 +105,6 @@ public class HomeActivity extends Activity implements HomeView, SwipeRefreshLayo
     @Override
     public void hideLoadingIndicator() {
         mProgressBar.setVisibility(View.GONE);
-        mRefreshLayout.setRefreshing(false);
     }
 
     @Override
