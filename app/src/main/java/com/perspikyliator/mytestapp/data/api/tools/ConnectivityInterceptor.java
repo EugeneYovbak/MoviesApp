@@ -25,7 +25,7 @@ public class ConnectivityInterceptor implements Interceptor {
     public Response intercept(@NonNull Chain chain) throws IOException {
         ConnectivityManager connectivityManager = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = connectivityManager.getActiveNetworkInfo();
-        if (netInfo != null && netInfo.isConnected()) {
+        if (netInfo == null || !netInfo.isConnected()) {
             throw new IOException(mContext.getString(R.string.error_connection_message));
         }
 

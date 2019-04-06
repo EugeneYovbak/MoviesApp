@@ -13,4 +13,21 @@
         <item name="android:textSize">18sp</item>
     </style>
 
+    <style name="MovieTitle" parent="AppTheme">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/color_text</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="MovieRate" parent="AppTheme">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/color_text_rate</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="MovieOverview" parent="AppTheme">
+        <item name="android:textColor">@color/color_text</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
 </resources>

@@ -1,8 +1,11 @@
 package com.perspikyliator.mytestapp.data.repository;
 
+import com.perspikyliator.mytestapp.app.Constants;
 import com.perspikyliator.mytestapp.data.api.MovieApiService;
 import com.perspikyliator.mytestapp.domain.MovieRepository;
+import com.perspikyliator.mytestapp.domain.model.MovieMeta;
 
+import io.reactivex.Single;
 import io.realm.Realm;
 
 public class MovieRepositoryImpl implements MovieRepository {
@@ -13,5 +16,10 @@ public class MovieRepositoryImpl implements MovieRepository {
     public MovieRepositoryImpl(MovieApiService apiService, Realm realm) {
         mApiService = apiService;
         mRealm = realm;
+    }
+
+    @Override
+    public Single<MovieMeta> getMovies(int page) {
+        return mApiService.getMovieList(Constants.API_KEY, page);
     }
 }

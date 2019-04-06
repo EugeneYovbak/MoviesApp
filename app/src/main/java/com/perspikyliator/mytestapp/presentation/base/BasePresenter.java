@@ -5,7 +5,7 @@ import io.reactivex.disposables.CompositeDisposable;
 public class BasePresenter<T extends BaseView> {
 
     protected T mView;
-    private CompositeDisposable mCompositeDisposable;
+    protected CompositeDisposable mCompositeDisposable;
 
     public void onAttach(T view) {
         mView = view;
