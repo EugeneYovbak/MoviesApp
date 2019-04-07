@@ -11,7 +11,10 @@ import java.util.List;
 
 import io.reactivex.Flowable;
 import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import io.realm.Realm;
+import io.realm.RealmResults;
 
 public class MovieRepositoryImpl implements MovieRepository {
 
@@ -28,7 +31,20 @@ public class MovieRepositoryImpl implements MovieRepository {
 
     @Override
     public Single<Movie> getMovie(int movieId) {
-        return mApiService.getMovie(movieId, Constants.API_KEY);
+        return mApiService.getMovie(movieId, Constants.API_KEY)
+                .compose(upstream -> upstream.onErrorResumeNext(throwable -> {
+                    //TODO It's 00:11 AM... I'm done with how to do it in correct way...
+                    return Single.just("")
+                            .subscribeOn(AndroidSchedulers.mainThread())
+                            .map(it -> {
+                                RealmResults<Movie> results = Realm.getDefaultInstance()
+                                        .where(Movie.class)
+                                        .equalTo(Movie.PRIMARY_KEY, movieId)
+                                        .findAllAsync();
+                                return results.first();
+                            })
+                            .subscribeOn(Schedulers.io());
+                }));
     }
 
     @Override
@@ -48,14 +64,13 @@ public class MovieRepositoryImpl implements MovieRepository {
                 .findAllAsync()
                 .asFlowable()
                 .map(ArrayList::new);
-
     }
 
     @Override
     public void saveMovie(Movie movie) {
         Realm.getDefaultInstance()
                 .executeTransactionAsync(
-                        realm1 -> realm1.insert(movie)
+                        realm -> realm.insert(movie)
                 );
     }
 
@@ -63,7 +78,7 @@ public class MovieRepositoryImpl implements MovieRepository {
     public void removeMovie(int movieId) {
         Realm.getDefaultInstance()
                 .executeTransactionAsync(
-                        realm1 -> realm1.where(Movie.class)
+                        realm -> realm.where(Movie.class)
                                 .equalTo(Movie.PRIMARY_KEY, movieId)
                                 .findAll()
                                 .deleteAllFromRealm()
