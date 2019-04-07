@@ -16,6 +16,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
+import io.reactivex.Flowable;
 import io.reactivex.Single;
 import io.reactivex.android.plugins.RxAndroidPlugins;
 import io.reactivex.plugins.RxJavaPlugins;
@@ -54,6 +55,7 @@ public class MoviePresenterTest {
     public void getMovieWhenSuccess_returnMovie() {
         Movie movie = generateMovie();
         when(mMovieRepository.getMovie(anyInt())).thenReturn(Single.just(movie));
+        when(mMovieRepository.observeMovie(anyInt())).thenReturn(Flowable.just(true));
 
         mMoviePresenter.getMovie(1);
 
@@ -67,6 +69,7 @@ public class MoviePresenterTest {
     public void getMovieSeveralTimesWhenSuccess_returnMovie() {
         Movie movie = generateMovie();
         when(mMovieRepository.getMovie(anyInt())).thenReturn(Single.just(movie));
+        when(mMovieRepository.observeMovie(anyInt())).thenReturn(Flowable.just(true));
 
         mMoviePresenter.getMovie(1);
         mMoviePresenter.getMovie(2);
@@ -88,6 +91,31 @@ public class MoviePresenterTest {
         Mockito.verify(mMovieView, times(1)).hideLoadingIndicator();
         Mockito.verify(mMovieView, times(1)).movieLoadError("error");
         Mockito.verify(mMovieView, never()).showMovie(any());
+    }
+
+    @Test
+    public void changeFavoriteWhenInactive_saveToFavorites() {
+        Movie movie = new Movie();
+        movie.setFavorite(false);
+        mMoviePresenter.mMovie = movie;
+
+        mMoviePresenter.changeFavorite();
+
+        Mockito.verify(mMovieRepository, times(1)).saveMovie(movie);
+        Mockito.verify(mMovieRepository, never()).removeMovie(anyInt());
+    }
+
+    @Test
+    public void changeFavoriteWhenActive_removeFromFavorites() {
+        Movie movie = new Movie();
+        movie.setId(1);
+        movie.setFavorite(true);
+        mMoviePresenter.mMovie = movie;
+
+        mMoviePresenter.changeFavorite();
+
+        Mockito.verify(mMovieRepository, times(1)).removeMovie(movie.getId());
+        Mockito.verify(mMovieRepository, never()).saveMovie(any());
     }
 
     @After

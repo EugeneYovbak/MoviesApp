@@ -9,7 +9,6 @@ import com.perspikyliator.mytestapp.domain.model.MovieMeta;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
 import io.realm.Realm;
-import io.realm.RealmResults;
 
 public class MovieRepositoryImpl implements MovieRepository {
 
@@ -30,17 +29,31 @@ public class MovieRepositoryImpl implements MovieRepository {
     }
 
     @Override
-    public Flowable<RealmResults<Movie>> observeMovie(Realm realm, int movieId) {
-        return realm.where(Movie.class).equalTo(Movie.PRIMARY_KEY, movieId).findAllAsync().asFlowable();
+    public Flowable<Boolean> observeMovie(int movieId) {
+        return Realm.getDefaultInstance()
+                .where(Movie.class)
+                .equalTo(Movie.PRIMARY_KEY, movieId)
+                .findAllAsync()
+                .asFlowable()
+                .map(results -> !results.isEmpty());
     }
 
     @Override
-    public void saveMovie(Realm realm, Movie movie) {
-        realm.executeTransactionAsync(realm1 -> realm1.insert(movie));
+    public void saveMovie(Movie movie) {
+        Realm.getDefaultInstance()
+                .executeTransactionAsync(
+                        realm1 -> realm1.insert(movie)
+                );
     }
 
     @Override
-    public void removeMovie(Realm realm, int movieId) {
-        realm.executeTransactionAsync(realm1 -> realm1.where(Movie.class).equalTo(Movie.PRIMARY_KEY, movieId).findAll().deleteAllFromRealm());
+    public void removeMovie(int movieId) {
+        Realm.getDefaultInstance()
+                .executeTransactionAsync(
+                        realm1 -> realm1.where(Movie.class)
+                                .equalTo(Movie.PRIMARY_KEY, movieId)
+                                .findAll()
+                                .deleteAllFromRealm()
+                );
     }
 }

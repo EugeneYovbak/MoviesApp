@@ -7,21 +7,20 @@ import com.perspikyliator.mytestapp.presentation.screen.movie.view.MovieView;
 
 import javax.inject.Inject;
 
+import androidx.annotation.VisibleForTesting;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
-import io.realm.Realm;
 
 public class MoviePresenter extends BasePresenter<MovieView> {
 
     private MovieRepository mMovieRepository;
-    private Realm mRealm;
 
-    private Movie mMovie;
+    @VisibleForTesting
+    Movie mMovie;
 
     @Inject
-    public MoviePresenter(MovieRepository movieRepository, Realm realm) {
+    public MoviePresenter(MovieRepository movieRepository) {
         mMovieRepository = movieRepository;
-        mRealm = realm;
     }
 
     public void getMovie(int movieId) {
@@ -45,19 +44,20 @@ public class MoviePresenter extends BasePresenter<MovieView> {
     private void handleMovieLoadSuccess(Movie movie) {
         mMovie = movie;
         mView.showMovie(mMovie);
-        observeMovie(mMovie.getId());
+        observeMovieIsFavorite(mMovie.getId());
     }
 
     private void handleMovieLoadError(Throwable throwable) {
         mView.movieLoadError(throwable.getMessage());
     }
 
-    private void observeMovie(int movieId) {
+    private void observeMovieIsFavorite(int movieId) {
         mCompositeDisposable.add(
-                mMovieRepository.observeMovie(mRealm, movieId)
+                mMovieRepository.observeMovie(movieId)
                         .subscribe(
-                                results -> handleMovieFavoriteChangeSuccess(!results.isEmpty()),
-                                this::handleMovieFavoriteChangeError)
+                                this::handleMovieFavoriteChangeSuccess,
+                                this::handleMovieFavoriteChangeError
+                        )
         );
     }
 
@@ -72,15 +72,9 @@ public class MoviePresenter extends BasePresenter<MovieView> {
 
     public void changeFavorite() {
         if (!mMovie.isFavorite()) {
-            mMovieRepository.saveMovie(mRealm, mMovie);
+            mMovieRepository.saveMovie(mMovie);
         } else {
-            mMovieRepository.removeMovie(mRealm, mMovie.getId());
+            mMovieRepository.removeMovie(mMovie.getId());
         }
-    }
-
-    @Override
-    public void onDetach() {
-        mRealm.close();
-        super.onDetach();
     }
 }
