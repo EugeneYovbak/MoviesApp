@@ -8,14 +8,13 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import io.realm.Realm;
 
 @Module
 public class DataModule {
 
     @Provides
     @Singleton
-    MovieRepository provideMovieRepository(MovieApiService movieApiService, Realm realm) {
-        return new MovieRepositoryImpl(movieApiService, realm);
+    MovieRepository provideMovieRepository(MovieApiService movieApiService) {
+        return new MovieRepositoryImpl(movieApiService);
     }
 }

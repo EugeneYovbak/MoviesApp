@@ -40,7 +40,7 @@
         android:layout_marginBottom="8dp"
         android:background="?android:attr/selectableItemBackgroundBorderless"
         android:padding="8dp"
-        android:src="@drawable/ic_favorite_inactive"
+        android:src="@drawable/background_favorite"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

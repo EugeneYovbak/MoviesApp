@@ -6,5 +6,7 @@ import com.perspikyliator.mytestapp.presentation.base.BaseView;
 public interface MovieView extends BaseView {
     void showMovie(Movie movie);
 
+    void changeFavorite(boolean isFavorite);
+
     void movieLoadError(String message);
 }

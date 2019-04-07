@@ -29,6 +29,8 @@ public class MovieActivity extends Activity implements MovieView {
 
     @BindView(R.id.iv_movie)
     ImageView mMovieImageView;
+    @BindView(R.id.iv_favorite)
+    ImageView mFavoriteImageView;
     @BindView(R.id.coverView)
     View mCoverView;
     @BindView(R.id.tv_movie_title)
@@ -61,6 +63,11 @@ public class MovieActivity extends Activity implements MovieView {
         onBackPressed();
     }
 
+    @OnClick(R.id.iv_favorite)
+    public void onFavoriteButtonPressed() {
+        mPresenter.changeFavorite();
+    }
+
     @Override
     public void showLoadingIndicator() {
         mProgressBar.setVisibility(View.VISIBLE);
@@ -69,13 +76,6 @@ public class MovieActivity extends Activity implements MovieView {
     @Override
     public void hideLoadingIndicator() {
         mProgressBar.setVisibility(View.GONE);
-    }
-
-    @Override
-    protected void onDestroy() {
-        mPresenter.onDetach();
-        TestApp.getDependencyGraph().releaseMovieComponent();
-        super.onDestroy();
     }
 
     @Override
@@ -91,7 +91,19 @@ public class MovieActivity extends Activity implements MovieView {
     }
 
     @Override
+    public void changeFavorite(boolean isFavorite) {
+        mFavoriteImageView.setSelected(isFavorite);
+    }
+
+    @Override
     public void movieLoadError(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    protected void onDestroy() {
+        mPresenter.onDetach();
+        TestApp.getDependencyGraph().releaseMovieComponent();
+        super.onDestroy();
     }
 }

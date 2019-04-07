@@ -3,12 +3,15 @@ package com.perspikyliator.mytestapp.domain.model;
 import com.google.gson.annotations.SerializedName;
 
 import io.realm.RealmObject;
+import io.realm.annotations.Ignore;
 import io.realm.annotations.PrimaryKey;
 
 public class Movie extends RealmObject {
 
+    public static final String PRIMARY_KEY = "id";
+
     @PrimaryKey
-    @SerializedName("id")
+    @SerializedName(PRIMARY_KEY)
     private int id;
     @SerializedName("title")
     private String title;
@@ -18,6 +21,8 @@ public class Movie extends RealmObject {
     private String overview;
     @SerializedName("vote_average")
     private String rate;
+    @Ignore
+    private boolean favorite;
 
     public int getId() {
         return id;
@@ -57,5 +62,13 @@ public class Movie extends RealmObject {
 
     public void setRate(String rate) {
         this.rate = rate;
+    }
+
+    public boolean isFavorite() {
+        return favorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        this.favorite = favorite;
     }
 }
