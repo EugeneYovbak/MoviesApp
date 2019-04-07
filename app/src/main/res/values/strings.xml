@@ -12,4 +12,5 @@
 
     <!--Errors-->
     <string name="error_connection_message">The Internet connection appears to be offline</string>
+    <string name="error_empty_favorites">No favorite movies yet</string>
 </resources>

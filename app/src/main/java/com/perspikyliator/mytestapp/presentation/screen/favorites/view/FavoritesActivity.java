@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.perspikyliator.mytestapp.R;
@@ -14,6 +15,7 @@ import com.perspikyliator.mytestapp.presentation.screen.favorites.presenter.Favo
 import com.perspikyliator.mytestapp.presentation.screen.home.view.adapter.MovieAdapter;
 import com.perspikyliator.mytestapp.presentation.screen.movie.view.MovieActivity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -27,6 +29,8 @@ import butterknife.OnClick;
 
 public class FavoritesActivity extends Activity implements FavoritesView {
 
+    @BindView(R.id.tv_empty_favorites)
+    TextView mEmptyFavoritesTextView;
     @BindView(R.id.rv_movies)
     RecyclerView mMoviesRecyclerView;
     @BindView(R.id.progressBar)
@@ -84,8 +88,15 @@ public class FavoritesActivity extends Activity implements FavoritesView {
     }
 
     @Override
-    public void favoriteMoviesLoadSuccess(List<Movie> movies) {
+    public void showFavoriteMovies(List<Movie> movies) {
+        mEmptyFavoritesTextView.setVisibility(View.GONE);
         mMovieAdapter.setMovieList(movies);
+    }
+
+    @Override
+    public void showEmptyFavorites() {
+        mEmptyFavoritesTextView.setVisibility(View.VISIBLE);
+        mMovieAdapter.setMovieList(new ArrayList<>());
     }
 
     @Override

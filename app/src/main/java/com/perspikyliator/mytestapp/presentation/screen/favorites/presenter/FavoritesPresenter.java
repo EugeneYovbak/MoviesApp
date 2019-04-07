@@ -29,7 +29,11 @@ public class FavoritesPresenter extends BasePresenter<FavoritesView> {
     }
 
     private void handleFavoritesLoadSuccess(List<Movie> movieList) {
-        mView.favoriteMoviesLoadSuccess(movieList);
+        if (!movieList.isEmpty()) {
+            mView.showFavoriteMovies(movieList);
+        } else {
+            mView.showEmptyFavorites();
+        }
     }
 
     private void handleFavoritesLoadError(Throwable throwable) {
