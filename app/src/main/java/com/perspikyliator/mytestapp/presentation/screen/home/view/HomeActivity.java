@@ -10,6 +10,7 @@ import android.widget.Toast;
 import com.perspikyliator.mytestapp.R;
 import com.perspikyliator.mytestapp.app.TestApp;
 import com.perspikyliator.mytestapp.domain.model.Movie;
+import com.perspikyliator.mytestapp.presentation.screen.favorites.view.FavoritesActivity;
 import com.perspikyliator.mytestapp.presentation.screen.home.presenter.HomePresenter;
 import com.perspikyliator.mytestapp.presentation.screen.home.view.adapter.MovieAdapter;
 import com.perspikyliator.mytestapp.presentation.screen.movie.view.MovieActivity;
@@ -25,6 +26,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class HomeActivity extends Activity implements HomeView, SwipeRefreshLayout.OnRefreshListener {
 
@@ -89,6 +91,11 @@ public class HomeActivity extends Activity implements HomeView, SwipeRefreshLayo
         Intent intent = new Intent(this, MovieActivity.class);
         intent.putExtra(MovieActivity.EXTRA_MOVIE_ID, movie.getId());
         startActivity(intent);
+    }
+
+    @OnClick(R.id.iv_favorites)
+    public void onFavoritesClick() {
+        startActivity(new Intent(this, FavoritesActivity.class));
     }
 
     @Override

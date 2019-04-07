@@ -6,6 +6,9 @@ import com.perspikyliator.mytestapp.domain.MovieRepository;
 import com.perspikyliator.mytestapp.domain.model.Movie;
 import com.perspikyliator.mytestapp.domain.model.MovieMeta;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import io.reactivex.Flowable;
 import io.reactivex.Single;
 import io.realm.Realm;
@@ -36,6 +39,16 @@ public class MovieRepositoryImpl implements MovieRepository {
                 .findAllAsync()
                 .asFlowable()
                 .map(results -> !results.isEmpty());
+    }
+
+    @Override
+    public Flowable<List<Movie>> getFavoriteMovies() {
+        return Realm.getDefaultInstance()
+                .where(Movie.class)
+                .findAllAsync()
+                .asFlowable()
+                .map(ArrayList::new);
+
     }
 
     @Override

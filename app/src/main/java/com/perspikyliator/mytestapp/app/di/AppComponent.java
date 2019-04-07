@@ -2,6 +2,7 @@ package com.perspikyliator.mytestapp.app.di;
 
 import com.perspikyliator.mytestapp.data.di.ApiModule;
 import com.perspikyliator.mytestapp.data.di.DataModule;
+import com.perspikyliator.mytestapp.presentation.screen.favorites.di.FavoritesComponent;
 import com.perspikyliator.mytestapp.presentation.screen.home.di.HomeComponent;
 import com.perspikyliator.mytestapp.presentation.screen.movie.di.MovieComponent;
 
@@ -15,4 +16,6 @@ public interface AppComponent {
     HomeComponent plusHomeComponent();
 
     MovieComponent plusMovieComponent();
+
+    FavoritesComponent plusFavoritesComponent();
 }

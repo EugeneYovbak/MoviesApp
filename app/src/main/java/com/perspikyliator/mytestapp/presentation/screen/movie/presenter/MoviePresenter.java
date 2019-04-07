@@ -71,10 +71,12 @@ public class MoviePresenter extends BasePresenter<MovieView> {
     }
 
     public void changeFavorite() {
-        if (!mMovie.isFavorite()) {
-            mMovieRepository.saveMovie(mMovie);
-        } else {
-            mMovieRepository.removeMovie(mMovie.getId());
+        if (mMovie != null) {
+            if (!mMovie.isFavorite()) {
+                mMovieRepository.saveMovie(mMovie);
+            } else {
+                mMovieRepository.removeMovie(mMovie.getId());
+            }
         }
     }
 }

@@ -2,6 +2,7 @@ package com.perspikyliator.mytestapp.app.di;
 
 import android.content.Context;
 
+import com.perspikyliator.mytestapp.presentation.screen.favorites.di.FavoritesComponent;
 import com.perspikyliator.mytestapp.presentation.screen.home.di.HomeComponent;
 import com.perspikyliator.mytestapp.presentation.screen.movie.di.MovieComponent;
 
@@ -11,6 +12,7 @@ public class DependencyGraph {
 
     private HomeComponent mHomeComponent;
     private MovieComponent mMovieComponent;
+    private FavoritesComponent mFavoritesComponent;
 
     public DependencyGraph(Context context) {
         mAppComponent = DaggerAppComponent.builder()
@@ -34,5 +36,14 @@ public class DependencyGraph {
 
     public void releaseMovieComponent() {
         mMovieComponent = null;
+    }
+
+    public FavoritesComponent initFavoritesComponent() {
+        mFavoritesComponent = mAppComponent.plusFavoritesComponent();
+        return mFavoritesComponent;
+    }
+
+    public void releaseFavoritesComponent() {
+        mFavoritesComponent = null;
     }
 }

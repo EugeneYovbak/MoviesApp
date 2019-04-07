@@ -7,6 +7,9 @@
     <!--Movie-->
     <string name="movie_title">Movie Details</string>
 
+    <!--Favorites-->
+    <string name="favorites_title">Favorite Movies</string>
+
     <!--Errors-->
     <string name="error_connection_message">The Internet connection appears to be offline</string>
 </resources>

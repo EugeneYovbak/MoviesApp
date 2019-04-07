@@ -30,6 +30,10 @@
             android:name=".presentation.screen.movie.view.MovieActivity"
             android:screenOrientation="portrait" />
 
+        <activity
+            android:name=".presentation.screen.favorites.view.FavoritesActivity"
+            android:screenOrientation="portrait" />
+
     </application>
 
 </manifest>
