@@ -83,14 +83,13 @@ public class HomePresenterTest {
 
     @Test
     public void getMoviesWhenError_returnError() {
-        Exception exception = new Exception("Error");
-        when(mMovieRepository.getMovies(anyInt())).thenReturn(Single.error(exception));
+        when(mMovieRepository.getMovies(anyInt())).thenReturn(Single.error(new Exception("error")));
 
         mHomePresenter.getMovies();
 
         Mockito.verify(mHomeView, times(1)).showLoadingIndicator();
         Mockito.verify(mHomeView, times(1)).hideLoadingIndicator();
-        Mockito.verify(mHomeView, times(1)).moviesLoadError("Error");
+        Mockito.verify(mHomeView, times(1)).moviesLoadError(anyString());
         Mockito.verify(mHomeView, never()).showMoreMovies(any());
         Mockito.verify(mHomeView, never()).showMovies(any());
     }

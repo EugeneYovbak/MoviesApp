@@ -7,7 +7,6 @@ import com.perspikyliator.mytestapp.presentation.screen.movie.view.MovieView;
 
 import javax.inject.Inject;
 
-import androidx.annotation.VisibleForTesting;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
@@ -15,7 +14,6 @@ public class MoviePresenter extends BasePresenter<MovieView> {
 
     private MovieRepository mMovieRepository;
 
-    @VisibleForTesting
     Movie mMovie;
 
     @Inject

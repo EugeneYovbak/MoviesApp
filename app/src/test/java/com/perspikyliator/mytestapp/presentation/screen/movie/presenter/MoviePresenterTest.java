@@ -53,7 +53,7 @@ public class MoviePresenterTest {
 
     @Test
     public void getMovieWhenSuccess_returnMovie() {
-        Movie movie = generateMovie();
+        Movie movie = new Movie();
         when(mMovieRepository.getMovie(anyInt())).thenReturn(Single.just(movie));
         when(mMovieRepository.observeMovie(anyInt())).thenReturn(Flowable.just(true));
 
@@ -67,7 +67,7 @@ public class MoviePresenterTest {
 
     @Test
     public void getMovieSeveralTimesWhenSuccess_returnMovie() {
-        Movie movie = generateMovie();
+        Movie movie = new Movie();
         when(mMovieRepository.getMovie(anyInt())).thenReturn(Single.just(movie));
         when(mMovieRepository.observeMovie(anyInt())).thenReturn(Flowable.just(true));
 
@@ -82,14 +82,13 @@ public class MoviePresenterTest {
 
     @Test
     public void getMovieWhenError_returnError() {
-        Exception exception = new Exception("error");
-        when(mMovieRepository.getMovie(anyInt())).thenReturn(Single.error(exception));
+        when(mMovieRepository.getMovie(anyInt())).thenReturn(Single.error(new Exception("error")));
 
         mMoviePresenter.getMovie(1);
 
         Mockito.verify(mMovieView, times(1)).showLoadingIndicator();
         Mockito.verify(mMovieView, times(1)).hideLoadingIndicator();
-        Mockito.verify(mMovieView, times(1)).movieLoadError("error");
+        Mockito.verify(mMovieView, times(1)).movieLoadError(anyString());
         Mockito.verify(mMovieView, never()).showMovie(any());
     }
 
@@ -121,9 +120,5 @@ public class MoviePresenterTest {
     @After
     public void cleanUp() {
         mMoviePresenter.onDetach();
-    }
-
-    private Movie generateMovie() {
-        return new Movie();
     }
 }
